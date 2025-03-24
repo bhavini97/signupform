@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 function postForm(event){
     event.preventDefault();
     const name = event.target.name.value;
-    console.log(name)
     const email =  event.target.email.value;
     const password = event.target.password.value;
      axios.post(`http://localhost:3000/user/signup`,{
