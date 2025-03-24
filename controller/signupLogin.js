@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const {User} = require('../models/centralized');
 
 module.exports ={
@@ -7,14 +8,21 @@ module.exports ={
        const password = req.body.userPass;
 
        try{
+        const hashedPassword = await bcrypt.hash(password, 10).catch(err => {
+            console.error('Error hashing password:', err);
+            throw new Error('Failed to hash password');
+        });
+
         const [result, created] = await User.findOrCreate({ 
             where: { email: email },
-            defaults:{username: username,password:password,email:email }
+            defaults:{username: username,password:hashedPassword,email:email }
        });
+
         if(!created){
             return  res.status(400).json({ message: 'User already exists with the same email' });;
         }
-        console.log('data entered in users table',result)
+        console.log('data entered in users table',result);
+
         return res.status(201).json({ message: 'User created successfully', user: result });
 
        }catch(err){
@@ -33,8 +41,10 @@ module.exports ={
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
             }
+            
+            const matchPassword = await bcrypt.compare(password, user.password);
 
-            if (user.password !== password) {
+            if (!matchPassword) {
                 return res.status(401).json({ message: "Invalid password" });
             }
 

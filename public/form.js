@@ -12,10 +12,16 @@ function postForm(event){
         userPass : password
      })
      .then(res=>{
+        alert(res.data.message);
         console.log(`respond send successfully`)
      }).catch(err=>{
-        console.error(`error in sending sign up data`);
-     })
+      if (err.response) {
+         alert(err.response.data.message); 
+     } else {
+         console.error(`Error in sending signup data`, err);
+         alert('Something went wrong. Please try again.');
+     }
+})
 
 };
 
