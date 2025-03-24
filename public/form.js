@@ -25,16 +25,28 @@ function getForm(event){
    const email =  event.target.email.value;
    const password = event.target.password.value;
     axios.post(`http://localhost:3000/user/login`,{
-         name : name,
+
          email: email,
          password: password
      })
     
-    .then(res=>{
-      console.log(`login data send successfully`)
+    .then(response=>{
+      alert(response.data.message);
+            console.log("Success:", response.data);
      
      }). catch (error=> {
-         alert("Login failed");
-         console.error("Error:", error);
-     });
-}
+      if (error.response) {
+         if (error.response.status === 404) {
+             alert( error.response.data.message); // User not found
+         } else if (error.response.status === 401) {
+             alert(error.response.data.message); // Invalid password
+         } else {
+             alert(error.response.data.message);
+         }
+     } else {
+         alert("Network Error: Unable to connect to server.");
+     }
+     console.error("Error:", error);
+ })
+     
+};
