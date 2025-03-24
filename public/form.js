@@ -17,4 +17,24 @@ function postForm(event){
         console.error(`error in sending sign up data`);
      })
 
+};
+
+function getForm(event){
+   event.preventDefault();
+   const name = event.target.name.value;
+   const email =  event.target.email.value;
+   const password = event.target.password.value;
+    axios.post(`http://localhost:3000/user/login`,{
+         name : name,
+         email: email,
+         password: password
+     })
+    
+    .then(res=>{
+      console.log(`login data send successfully`)
+     
+     }). catch (error=> {
+         alert("Login failed");
+         console.error("Error:", error);
+     });
 }

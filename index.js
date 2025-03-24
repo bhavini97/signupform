@@ -15,6 +15,10 @@ app.get('/',(req,res)=>{
 })
 app.post('/user/signup',controller.addUser);
 
+app.get('/login',(req,res)=>{
+    res.sendFile(__dirname+'/public/login.html')
+})
+
 syncDB().then(() => {
     app.listen(3000, () => console.log('Server running on port 3000'));
 }).catch(err=>{

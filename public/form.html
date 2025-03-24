@@ -32,7 +32,7 @@
   <body>
     <div class="main">
       <div class="container">
-        <form onsubmit="postForm(event)" method="post">
+        <form onsubmit="postForm(event)" method="post" id="signup">
           <h3 style="text-align: center">Sign Up</h3>
           <br />
           Enter Your Name: <input type="text" id="name" required />
@@ -42,6 +42,8 @@
           Enter Your Password: <input type="password" id="password" required />
           <br /><br />
           <button type="submit">Submit</button>
+          <br><br>
+          <button type="button"><a href="http://localhost:3000/login">Existing User</a></button>
         </form>
       </div>
     </div>
