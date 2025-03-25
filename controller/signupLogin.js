@@ -10,7 +10,7 @@ module.exports ={
        try{
         const hashedPassword = await bcrypt.hash(password, 10).catch(err => {
             console.error('Error hashing password:', err);
-            throw new Error('Failed to hash password');
+            return  res.status(501).json({ message: 'error hashing password' })
         });
 
         const [result, created] = await User.findOrCreate({ 
@@ -19,10 +19,10 @@ module.exports ={
        });
 
         if(!created){
-            return  res.status(400).json({ message: 'User already exists with the same email' });;
+            return  res.status(400).json({ message: 'User already exists with the same email' });
         }
-        console.log('data entered in users table',result);
 
+        
         return res.status(201).json({ message: 'User created successfully', user: result });
 
        }catch(err){
@@ -42,13 +42,16 @@ module.exports ={
                 return res.status(404).json({ message: "User not found" });
             }
             
-            const matchPassword = await bcrypt.compare(password, user.password);
+            const matchPassword = await bcrypt.compare(password, user.password).catch(err => {
+                console.error('Error comparing hash password:', err);
+                return  res.status(501).json({ message:'Something went wrong.Failed to compare hash password'});
+            });;
 
             if (!matchPassword) {
                 return res.status(401).json({ message: "Invalid password" });
             }
 
-           return res.status(200).json({ message: "Login successful" });
+           return res.status(200).json({ message: "Login successful",user:user});
 
         } catch (error) {
             console.error(" Error logging in:", error);

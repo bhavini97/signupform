@@ -38,7 +38,9 @@ function getForm(event){
     
     .then(response=>{
       alert(response.data.message);
-            console.log("Success:", response.data);
+      console.log("Success:", response.data);
+      localStorage.setItem('useremail', response.data.user.email);
+      window.location.href = "/expense/add-expense";
      
      }). catch (error=> {
       if (error.response) {
